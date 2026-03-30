@@ -32,7 +32,7 @@ cargo run
    websocket_url = "wss://ws-subscriptions-clob.polymarket.com"
 
    [trading]
-   enabled = true                          # Set to true to enable live trading
+   enabled = true                          # Set to true to enable live trading (false = paper trading)
    private_key = "YOUR_PRIVATE_KEY"        # Your Polymarket private key
    proxy_address = "YOUR_PROXY_ADDRESS"    # Your Polymarket proxy wallet if applicable
    signature_type = 1                      # 0=EOA, 1=POLY_PROXY, 2=GNOSIS_SAFE
