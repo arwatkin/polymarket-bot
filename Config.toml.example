@@ -1,0 +1,42 @@
+# Polymarket 5-Minute Tracker Configuration
+
+# List of markets to track
+# Format: "{asset}-updown-5m" where asset is btc, eth, sol, etc.
+[[markets]]
+slug = "btc-updown-5m"
+
+[[markets]]
+slug = "eth-updown-5m"
+
+[[markets]]
+slug = "sol-updown-5m"
+
+[[markets]]
+slug = "xrp-updown-5m"
+
+[[markets]]
+slug = "doge-updown-5m"
+
+[[markets]]
+slug = "hype-updown-5m"
+
+[[markets]]
+slug = "bnb-updown-5m"
+
+# API Configuration
+[api]
+gamma_base_url = "https://gamma-api.polymarket.com"
+websocket_url = "wss://ws-subscriptions-clob.polymarket.com"
+
+# Trading Configuration
+[trading]
+enabled = false  # Set to true to enable live trading
+bet_amount = 1  # Amount in USD to bet per trade (1 = $1)
+private_key = "YOUR_POLYMARKET_PRIVATE_KEY"  # Your private key (leave empty to disable trading)
+proxy_address = ""  # Your Polymarket proxy wallet address (funder)
+signature_type = 1  # 0=EOA, 1=POLY_PROXY, 2=GNOSIS_SAFE
+tag_threshold = 0.75  # Tag when price falls below this
+execute_threshold = 0.80  # Execute when price regains this after being tagged
+monitoring_window_seconds = 120 # Start monitoring when 2 minutes remain (120 seconds) in the 5 minute window
+max_asset_trades = 1  # Maximum number of trades per asset per 5 minute window
+max_retries = 5  # Maximum number of retry attempts if trade fails to fill

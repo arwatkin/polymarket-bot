@@ -1,0 +1,7 @@
+/target
+rs-clob-client.txt
+status.log
+*.log
+debug.log
+Config.toml
+secrets.toml
