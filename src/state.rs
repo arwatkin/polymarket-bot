@@ -25,8 +25,10 @@ impl AssetTradeWindow {
 /// Maximum number of price history entries to keep
 const MAX_PRICE_HISTORY: usize = 1000;
 
-/// Maximum number of trades to keep
-const MAX_TRADES: usize = 100;
+/// Maximum number of trades to keep (0 = unlimited)
+/// Trades are evaluated at each interval end, so memory usage is bounded by
+/// how long evaluation takes plus any pending trades.
+const MAX_TRADES: usize = 0; // 0 = no limit
 
 #[derive(Debug, Clone)]
 pub struct PriceUpdate {
@@ -243,8 +245,21 @@ impl AppState {
         let mut trades = self.trades.write();
         trades.push_front(trade);
 
-        while trades.len() > MAX_TRADES {
-            trades.pop_back();
+        // Only trim if MAX_TRADES is set (non-zero)
+        if MAX_TRADES > 0 {
+            // Only pop trades that have already been evaluated (have a result).
+            // This prevents losing unevaluated trades when we hit the MAX_TRADES limit.
+            while trades.len() > MAX_TRADES {
+                // Find the oldest evaluated trade from the back
+                if let Some(idx) = trades.iter().rposition(|t| t.result.is_some()) {
+                    trades.remove(idx);
+                } else {
+                    // No evaluated trades to remove - break to avoid unbounded growth
+                    // This shouldn't happen in normal operation since trades are
+                    // evaluated before new intervals start
+                    break;
+                }
+            }
         }
     }
 
